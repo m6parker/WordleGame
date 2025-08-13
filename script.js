@@ -43,18 +43,7 @@ const submitButton = document.querySelector('.submit-button');
 submitButton.addEventListener('click', () => {
     console.log('answer', answer);
 
-    // check if theres 5 letters
-    // check if word is real
-    // for each letter in current row -> does answer.contain(letter)
-    // for each letter update color
-    // for(i = 0 to 5){ 
-    //    if(guess[i] === word[i]){ green }
-    //    else if(word.contains(guess[i])){ yellow }
-    //    else{ grey }
-    // }
-    // activate Next Row (i+1)
-
-    const guess = createGuess(0);
+    const guess = createGuess(activeRowIndex);
 
     if(guess.lenth < 5){
         console.log('not enough letters');
@@ -78,11 +67,13 @@ submitButton.addEventListener('click', () => {
 });
 
 function setColors(answer, guess){
+
     const guessArray = guess.split('');
     const answerArray = answer.split('');
     console.log('guess: ', guessArray);
     console.log('answer: ', answerArray);
 
+    // TODO need to chack only the current row index for x
     for(let x = 0; x < guessArray.length; x++){
         console.log(guessArray[x], " : ", answerArray[x]);
         if(guessArray[x] === answerArray[x]){
