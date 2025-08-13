@@ -20,6 +20,22 @@ body {
     text-align: center;
 }
 
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: hotpink;
+    color: white;
+    border: 2px solid rgb(130, 52, 65);
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 20px;
+    user-select: none;
+}
+
+button:hover {
+    background-color: rgb(156, 52, 104);
+}
+
 .grid-container {
     display: flex;
     flex-direction: column;
@@ -52,7 +68,7 @@ body {
 }
 
 .row0 input{
-    background-color: pink;
+    background-color: white;
 }
 
 .grid-row.readonly input{
