@@ -17,7 +17,6 @@ function createGrid(){
             input.type = 'text';
             input.classList.add(`input${i}`);
             input.classList.add(`letter-${j}`);
-            // input.placeholder = `Row ${i+1}, Col ${j+1}`;
             input.setAttribute('readonly', true);
             input.setAttribute('maxlength', 1);
             row.appendChild(input);
@@ -27,12 +26,10 @@ function createGrid(){
 };
 
 function activateRow(index){
-    // console.log(document.querySelector(`.row${index}`))
     document.querySelector(`.row${index}`).removeAttribute('readonly');
     document.querySelector(`.row${index}`).classList.remove('readonly');
     document.querySelectorAll(`.input${index}`).forEach(input => input.removeAttribute('readonly'));
 
-    // const guess = 
 }
 
 function setRandomWord(wordList){
@@ -90,22 +87,18 @@ function setColors(answer, guess){
     console.log('guess: ', guessArray);
     console.log('answer: ', answerArray);
 
-    // TODO need to chack only the current row index for x
     for(let x = 0; x < guessArray.length; x++){
         console.log(guessArray[x], " : ", answerArray[x]);
         if(guessArray[x] === answerArray[x]){
             console.log('green letter');
-            // document.querySelector(`.letter-${x}`).style.color = 'green';
             document.querySelector(`.row${activeRowIndex} .letter-${x}`).style.color = 'green';
         }
         else if( answerArray.includes(guessArray[x])){
             console.log('yellow letter');
-            // document.querySelector(`.letter-${x}`).style.color = 'yellow';
             document.querySelector(`.row${activeRowIndex} .letter-${x}`).style.color = 'yellow';
         }
         else{
             console.log('grey letter');
-            // document.querySelector(`.letter-${x}`).style.color = 'grey';
             document.querySelector(`.row${activeRowIndex} .letter-${x}`).style.color = 'grey';
         }
     }
@@ -156,3 +149,4 @@ createGrid();
 let activeRowIndex = 0;
 activateRow(activeRowIndex);
 const answer = setRandomWord(wordList);
+document.querySelector(`.input${activeRowIndex}.letter-0`).focus();
