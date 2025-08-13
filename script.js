@@ -3,6 +3,7 @@
 const grid = document.querySelector('.grid-container');
 const rows = 6;
 const cols = 5;
+let gameOver = false;
 
 function createGrid(){
 
@@ -44,6 +45,7 @@ submitButton.addEventListener('click', () => {
     console.log('answer', answer);
 
     const guess = createGuess(activeRowIndex);
+    console.log('guess', guess);
 
     if(guess.lenth < 5){
         console.log('not enough letters');
@@ -56,14 +58,22 @@ submitButton.addEventListener('click', () => {
     }
 
     if(guess === answer){
+        setColors(answer, guess);
+        setTimeout(function() {
+            document.querySelector('.win-container').classList.remove('hidden');
+        }, 3000);
+
+        document.querySelector('.score-div').innerHTML = `Score: ${activeRowIndex+1}/6`;
+        //getDefintion()
+        gameOver = true;
         console.log('win game');
-        return;
     }
 
-    setColors(answer, guess);
-    activeRowIndex++;
-    activateRow(activeRowIndex);
-
+    if(activeRowIndex < 5 && !gameOver){
+        setColors(answer, guess);
+        activeRowIndex++;
+        activateRow(activeRowIndex);
+    }
 });
 
 function setColors(answer, guess){
@@ -78,20 +88,23 @@ function setColors(answer, guess){
         console.log(guessArray[x], " : ", answerArray[x]);
         if(guessArray[x] === answerArray[x]){
             console.log('green letter');
-            document.querySelector(`.letter-${x}`).style.color = 'green';
+            // document.querySelector(`.letter-${x}`).style.color = 'green';
+            document.querySelector(`.row${activeRowIndex} .letter-${x}`).style.color = 'green';
         }
         else if( answerArray.includes(guessArray[x])){
             console.log('yellow letter');
-            document.querySelector(`.letter-${x}`).style.color = 'yellow';
+            // document.querySelector(`.letter-${x}`).style.color = 'yellow';
+            document.querySelector(`.row${activeRowIndex} .letter-${x}`).style.color = 'yellow';
         }
         else{
             console.log('grey letter');
-            document.querySelector(`.letter-${x}`).style.color = 'grey';
+            // document.querySelector(`.letter-${x}`).style.color = 'grey';
+            document.querySelector(`.row${activeRowIndex} .letter-${x}`).style.color = 'grey';
         }
     }
 }
 
-
+// randomly selects a word from words.js
 function createGuess(index) {
     const row = document.querySelectorAll(`.input${index}`);
     const guess = Array.from(row)
@@ -100,6 +113,18 @@ function createGuess(index) {
     return guess;
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const inputs = document.querySelectorAll('input[type="text"][maxlength]');
+    inputs.forEach((input, index) => {
+        input.addEventListener('input', () => {
+            if (input.value.length === parseInt(input.maxLength)) {
+                if (index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            }
+        });
+    });
+});
 
 // Start Game - create the squares and unlock the first row
 createGrid();
