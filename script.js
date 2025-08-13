@@ -42,6 +42,10 @@ function setRandomWord(wordList){
 
 const submitButton = document.querySelector('.submit-button');
 submitButton.addEventListener('click', () => {
+    checkGuess();
+});
+
+function checkGuess(){
     console.log('answer', answer);
 
     const guess = createGuess(activeRowIndex);
@@ -73,8 +77,11 @@ submitButton.addEventListener('click', () => {
         setColors(answer, guess);
         activeRowIndex++;
         activateRow(activeRowIndex);
+        //focus on next first box
+        // document.querySelector(`.input${activeRowIndex} letter-0`).focus();
     }
-});
+};
+
 
 function setColors(answer, guess){
 
@@ -113,18 +120,36 @@ function createGuess(index) {
     return guess;
 }
 
+
 document.addEventListener('DOMContentLoaded', () => {
     const inputs = document.querySelectorAll('input[type="text"][maxlength]');
+
+    //continuously type thru the input boxes
     inputs.forEach((input, index) => {
         input.addEventListener('input', () => {
-            if (input.value.length === parseInt(input.maxLength)) {
+            if (input.value.length === parseInt(input.maxLength)){
                 if (index < inputs.length - 1) {
                     inputs[index + 1].focus();
                 }
             }
         });
+
+        //backspace
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Backspace' && input.value.length === 0 && index > 0){
+                inputs[index - 1].focus();
+            }
+        });
+        
+        //enter
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter'){
+                checkGuess();
+            }
+        });
     });
 });
+
 
 // Start Game - create the squares and unlock the first row
 createGrid();
