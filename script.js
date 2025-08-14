@@ -148,6 +148,8 @@ function createGuess(index) {
 
 document.addEventListener('DOMContentLoaded', () => {
     const inputs = document.querySelectorAll('input[type="text"][maxlength]');
+    let nextGroupIndex = 0;
+    console.log(inputs)
 
     //continuously type thru the input boxes
     inputs.forEach((input, index) => {
@@ -161,7 +163,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         //backspace
         input.addEventListener('keydown', (e) => {
-            if (e.key === 'Backspace' && input.value.length === 0 && index > 0){
+            if (e.key === 'Backspace' && input.value.length === 0 && index > 0){ // todo check which group you can delete
+                // if(index % 5){ inputs[index - 1].focus(); }
                 inputs[index - 1].focus();
             }
         });
@@ -170,6 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter'){
                 checkGuess();
+                nextGroupIndex+5;
             }
         });
     });
