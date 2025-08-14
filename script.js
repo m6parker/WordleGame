@@ -5,6 +5,9 @@ const message = document.querySelector('.messages-div');
 const rows = 6;
 const cols = 5;
 let gameOver = false;
+let greyKeys = [];
+let yellowKeys = [];
+let greenkeys = [];
 
 function createGrid(){
 
@@ -67,19 +70,20 @@ function checkGuess(){
 
     // setTimeout(function(){}, 500);
     setColors(answer, guess);
+    colorKeyboard();
 
     // if guessed the correct word
     if(guess === answer){
+        gameOver = true;
         setTimeout(function() {
             document.querySelector('.win-container').classList.remove('hidden');
         }, 2000);
 
         document.querySelector('.score-div').innerHTML = `Score: ${activeRowIndex+1}/6`;
         //getDefintion()
-        gameOver = true;
     }
 
-    if(activeRowIndex === 5){
+    if(activeRowIndex === 5 && !gameOver){
         setTimeout(function() {
             document.querySelector('.lose-container').classList.remove('hidden');
         }, 2000);
@@ -110,6 +114,7 @@ function setColors(answer, guess) {
     //find all correct letters to be green
     for (let x = 0; x < guessArray.length; x++) {
         if (guessArray[x] === answerArray[x]) {
+            greenkeys.push(guessArray[x]);
             document.querySelector(`.row${activeRowIndex} .letter-${x}`).style.backgroundColor = 'green';
             answerLetterCounts[guessArray[x]]--;
         }
@@ -120,9 +125,11 @@ function setColors(answer, guess) {
         const tile = document.querySelector(`.row${activeRowIndex} .letter-${x}`);
         if (tile.style.backgroundColor !== 'green') {
             if (answerLetterCounts[guessArray[x]] > 0) {
+                yellowKeys.push(guessArray[x]);
                 tile.style.backgroundColor = 'yellow';
                 answerLetterCounts[guessArray[x]]--;
             } else {
+                greyKeys.push(guessArray[x]);
                 tile.style.backgroundColor = 'grey';
             }
         }
@@ -167,6 +174,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+//match mini keyboard
+function colorKeyboard(){
+    greenkeys.forEach(letter => {
+        document.querySelector(`.${letter}`).style.backgroundColor = 'green';
+    });
+    greyKeys.forEach(letter => {
+        document.querySelector(`.${letter}`).style.backgroundColor = 'grey';
+    });
+    yellowKeys.forEach(letter => {
+        document.querySelector(`.${letter}`).style.backgroundColor = 'yellow';
+    });
+}
 
 
 // Start Game - create the squares and unlock the first row

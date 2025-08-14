@@ -33,7 +33,7 @@ body {
     flex-direction: column;
 }
 
-button {
+.reset-button, .submit-button {
     padding: 10px 20px;
     font-size: 16px;
     background-color: hotpink;
@@ -45,7 +45,7 @@ button {
     user-select: none;
 }
 
-button:hover {
+.reset-button:hover, .submit-button:hover {
     background-color: rgb(156, 52, 104);
 }
 
@@ -68,15 +68,14 @@ button:hover {
 }
 
 .grid-row input {
-    flex: 1;
     padding: 8px;
-    width: 50px;
-    height: 70px;
+    width: 40px;
+    height: 40px;
     box-sizing: content-box;
     border: 2px solid black;
     border-radius: 10px;
     justify-items: center;
-    font-size: xxx-large;
+    font-size: xx-large;
     text-transform: uppercase;
 }
 
@@ -92,4 +91,16 @@ button:hover {
 
 .messages-div{
     min-height: 30px;
+}
+
+.keyboard button{
+    margin: 5px;
+    height: 40px;
+    width: 40px;
+    justify-content: center;
+    display: inline-flex;
+    background-color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    align-items: center;
 }
