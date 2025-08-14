@@ -20,7 +20,7 @@ body {
     text-align: center;
 }
 
-.pause-container, .win-container{
+.pause-container, .win-container, .lose-container{
     height: 100%;
     width: 100%;
     background-color: rgba(255, 0, 0, 0.27);
@@ -71,7 +71,7 @@ button:hover {
     flex: 1;
     padding: 8px;
     width: 50px;
-    height: 50px;
+    height: 70px;
     box-sizing: content-box;
     border: 2px solid black;
     border-radius: 10px;
@@ -80,11 +80,16 @@ button:hover {
     text-transform: uppercase;
 }
 
-.row0 input{
+.row0 input, .row1 input, .row2 input, .row3 input, .row4 input, .row5 input{
     background-color: white;
+    transition: background-color 1s linear;
 }
 
 .grid-row.readonly input{
     background-color: rgb(142, 142, 142);
     user-select: none;
+}
+
+.messages-div{
+    min-height: 30px;
 }

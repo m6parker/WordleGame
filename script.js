@@ -1,6 +1,7 @@
 
 
 const grid = document.querySelector('.grid-container');
+const message = document.querySelector('.messages-div');
 const rows = 6;
 const cols = 5;
 let gameOver = false;
@@ -42,69 +43,93 @@ submitButton.addEventListener('click', () => {
     checkGuess();
 });
 
+const reloadButton = document.querySelector('.reset-button');
+reloadButton.addEventListener('click', () =>{
+    location.reload();
+});
+
+//validate the guess and change the colors
 function checkGuess(){
-    console.log('answer', answer);
-
+    // turn the guess into an array of the letters
     const guess = createGuess(activeRowIndex);
-    console.log('guess', guess);
 
-    if(guess.lenth < 5){
-        console.log('not enough letters');
+    //check if all letters are used
+    if(guess.length < 5){
+        message.textContent = 'Not enough letters';
         return;
     }
 
+    //check if its a 'real' word
     if(!wordList.includes(guess)){
-        console.log('not a real word');
+        message.textContent = 'Not a real word';
         return;
     }
 
+    // setTimeout(function(){}, 500);
+    setColors(answer, guess);
+
+    // if guessed the correct word
     if(guess === answer){
-        setColors(answer, guess);
         setTimeout(function() {
             document.querySelector('.win-container').classList.remove('hidden');
-        }, 3000);
+        }, 2000);
 
         document.querySelector('.score-div').innerHTML = `Score: ${activeRowIndex+1}/6`;
         //getDefintion()
         gameOver = true;
-        console.log('win game');
+    }
+
+    if(activeRowIndex === 5){
+        setTimeout(function() {
+            document.querySelector('.lose-container').classList.remove('hidden');
+        }, 2000);
+
+        document.querySelector('.answer-div').innerHTML = `Answer: ${answer}`;
+        //getDefintion()
+        gameOver = true;
     }
 
     if(activeRowIndex < 5 && !gameOver){
-        setColors(answer, guess);
         activeRowIndex++;
         activateRow(activeRowIndex);
-        //focus on next first box
-        // document.querySelector(`.input${activeRowIndex} letter-0`).focus();
     }
+
+    message.textContent = '';
 };
 
-
-function setColors(answer, guess){
-
+function setColors(answer, guess) {
     const guessArray = guess.split('');
     const answerArray = answer.split('');
-    console.log('guess: ', guessArray);
-    console.log('answer: ', answerArray);
+    const answerLetterCounts = {};
 
-    for(let x = 0; x < guessArray.length; x++){
-        console.log(guessArray[x], " : ", answerArray[x]);
-        if(guessArray[x] === answerArray[x]){
-            console.log('green letter');
-            document.querySelector(`.row${activeRowIndex} .letter-${x}`).style.color = 'green';
+    // how many of each letter
+    answerArray.forEach(letter => {
+        answerLetterCounts[letter] = (answerLetterCounts[letter] || 0) + 1;
+    });
+
+    //find all correct letters to be green
+    for (let x = 0; x < guessArray.length; x++) {
+        if (guessArray[x] === answerArray[x]) {
+            document.querySelector(`.row${activeRowIndex} .letter-${x}`).style.backgroundColor = 'green';
+            answerLetterCounts[guessArray[x]]--;
         }
-        else if( answerArray.includes(guessArray[x])){
-            console.log('yellow letter');
-            document.querySelector(`.row${activeRowIndex} .letter-${x}`).style.color = 'yellow';
-        }
-        else{
-            console.log('grey letter');
-            document.querySelector(`.row${activeRowIndex} .letter-${x}`).style.color = 'grey';
+    }
+
+    // check for correct letters in the  wrong spot and incorrect letters
+    for (let x = 0; x < guessArray.length; x++) {
+        const tile = document.querySelector(`.row${activeRowIndex} .letter-${x}`);
+        if (tile.style.backgroundColor !== 'green') {
+            if (answerLetterCounts[guessArray[x]] > 0) {
+                tile.style.backgroundColor = 'yellow';
+                answerLetterCounts[guessArray[x]]--;
+            } else {
+                tile.style.backgroundColor = 'grey';
+            }
         }
     }
 }
 
-// randomly selects a word from words.js
+// creates an array containing individual letters of the guess
 function createGuess(index) {
     const row = document.querySelectorAll(`.input${index}`);
     const guess = Array.from(row)
