@@ -33,7 +33,7 @@ body {
     flex-direction: column;
 }
 
-.reset-button, .submit-button {
+.reset-button, .submit-button, .new-game-button {
     padding: 10px 20px;
     font-size: 16px;
     background-color: hotpink;
@@ -45,7 +45,7 @@ body {
     user-select: none;
 }
 
-.reset-button:hover, .submit-button:hover {
+.reset-button:hover, .submit-button:hover, .new-game-button:hover {
     background-color: rgb(156, 52, 104);
 }
 
