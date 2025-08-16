@@ -93,6 +93,8 @@ function checkGuess(){
         gameOver = true;
     }
 
+    Array.from(document.querySelector(`.row${activeRowIndex}`).children).forEach(input => input.setAttribute("readonly", true));
+
     if(activeRowIndex < 5 && !gameOver){
         activeRowIndex++;
         activateRow(activeRowIndex);
@@ -163,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         //backspace
         input.addEventListener('keydown', (e) => {
-            if (e.key === 'Backspace' && input.value.length === 0 && index > 0){ // todo check which group you can delete
+            if (e.key === 'Backspace' && input.value.length === 0 && index > 0 && !input.readonly){ // todo check which group you can delete
                 // if(index % 5){ inputs[index - 1].focus(); }
                 inputs[index - 1].focus();
             }
