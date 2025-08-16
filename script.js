@@ -51,6 +51,11 @@ reloadButton.addEventListener('click', () =>{
     location.reload();
 });
 
+const newGameButton = document.querySelector('.new-game-button');
+newGameButton.addEventListener('click', () =>{
+    location.reload();
+});
+
 //validate the guess and change the colors
 function checkGuess(){
     // turn the guess into an array of the letters
