@@ -55,17 +55,18 @@ reloadButton.addEventListener('click', () =>{
 function checkGuess(){
     // turn the guess into an array of the letters
     const guess = createGuess(activeRowIndex);
+    if(message.textContent != ""){ message.textContent = ""; }
 
     //check if all letters are used
     if(guess.length < 5){
         message.textContent = 'Not enough letters';
-        return;
+        return false;
     }
 
     //check if its a 'real' word
     if(!wordList.includes(guess)){
         message.textContent = 'Not a real word';
-        return;
+        return false;
     }
 
     // setTimeout(function(){}, 500);
@@ -96,6 +97,7 @@ function checkGuess(){
     if(activeRowIndex < 5 && !gameOver){
         activeRowIndex++;
         activateRow(activeRowIndex);
+        return true;
     }
 
     message.textContent = '';
@@ -155,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
     inputs.forEach((input, index) => {
         input.addEventListener('input', () => {
             if (input.value.length === parseInt(input.maxLength)){
-                if (index < inputs.length - 1) {
+                if (index < inputs.length - 1 && (!input.classList.contains('letter-4'))) {
                     inputs[index + 1].focus();
                 }
             }
@@ -163,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         //backspace
         input.addEventListener('keydown', (e) => {
-            if (e.key === 'Backspace' && input.value.length === 0 && index > 0){ // todo check which group you can delete
+            if (e.key === 'Backspace' && input.value.length === 0 && index > 0 && (index % 5) != 0){
                 // if(index % 5){ inputs[index - 1].focus(); }
                 inputs[index - 1].focus();
             }
@@ -172,8 +174,10 @@ document.addEventListener('DOMContentLoaded', () => {
         //enter
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter'){
-                checkGuess();
-                nextGroupIndex+5;
+                if(checkGuess()) {
+                    nextGroupIndex+5;
+                    inputs[index + 1].focus();
+                }
             }
         });
     });
